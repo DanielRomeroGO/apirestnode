@@ -76,7 +76,7 @@ const postAlumno = async (req, res) => {
         //const { nombreImg, blob } = guardarImagen(imagen);
         
 
-        const alumno = { nombre, edad, imagen /*: nombreImg*/, imagenblob /*: blob*/, idCurso };        
+        const alumno = { nombre, edad, /*imagen : nombreImg, imagenblob : blob,*/ idCurso };        
         await connection.query("INSERT INTO alumnos SET ?", alumno);
 
         // Enviar respuesta al cliente
