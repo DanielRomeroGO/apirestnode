@@ -36,7 +36,7 @@ function guardarImagen(imagen){
     return { nombreImg, blob };
 }
 
-const subirImagen = async (req, res, next) => {
+/*const subirImagen = async (req, res, next) => {
     try {
         upload.single('imagen')(req, res, function (err) {
             if (err instanceof multer.MulterError) {
@@ -50,7 +50,7 @@ const subirImagen = async (req, res, next) => {
         console.error(error);
         return res.status(500).send(error.message);
     }
-}
+}*/
 
 
 const postAlumno = async (req, res) => {
@@ -133,7 +133,7 @@ const deleteAlumno= async(request, response)=>{
 }
 
 export const methods={
-    subirImagen,
+    //subirImagen,
     getAlumnos,
     getAlumno,
     postAlumno,
