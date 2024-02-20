@@ -111,10 +111,10 @@ const updateAlumno= async(request, response)=>{
         }*/
         const connection = await getConnection();
 
-        const { nombreImg, blob } = guardarImagen(imagen);
+        //const { nombreImg, blob } = guardarImagen(imagen);
         
 
-        const alumno = { nombre, edad, imagen : nombreImg, imagenblob : blob, idCurso }; 
+        const alumno = { nombre, edad, /*imagen : nombreImg, imagenblob : blob,*/ idCurso }; 
         const result = await connection.query("UPDATE alumnos SET ? WHERE id = ?", [alumno, id]);
         response.json(result);
     }catch(error){
