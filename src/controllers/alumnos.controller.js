@@ -106,9 +106,9 @@ const updateAlumno= async(request, response)=>{
         if (edad === undefined) {
             return response.status(400).json({ message: "Error, no se ha introducido una edad" });
         }
-        if (imagen === undefined) {
+        /*if (imagen === undefined) {
             return response.status(400).json({ message: "Error, no se ha introducido una imagen" });
-        }
+        }*/
         const connection = await getConnection();
 
         const { nombreImg, blob } = guardarImagen(imagen);
