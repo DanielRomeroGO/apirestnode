@@ -13,7 +13,7 @@ app.set('port', 4000);
 //Middlewares
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(upload.single('imagen'));
+//app.use(upload.single('imagen'));
 
 //Rutas
 app.use('/api/alumnos/', alumnosRoutes);
