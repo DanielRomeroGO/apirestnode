@@ -95,7 +95,7 @@ const updateAlumno= async(request, response)=>{
     try{
         const { id } = request.params;
         const { nombre, edad, idCurso } = request.body;
-        const imagen = request.file;
+        //const imagen = request.file;
 
         if(id === undefined){
             response.status(400).json({message:"Error, no se ha introducido un id"});
