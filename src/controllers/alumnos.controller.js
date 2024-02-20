@@ -57,7 +57,10 @@ const postAlumno = async (req, res) => {
     try {
         const { nombre, edad, idCurso } = req.body;
         const imagen = req.file;
-
+        console.log(nombre);
+        console.log(edad);
+        console.log(idCurso);
+        console.log(imagen);
         if (nombre === undefined) {
             return res.status(400).json({ message: "Error, no se ha introducido un nombre" });
         }
