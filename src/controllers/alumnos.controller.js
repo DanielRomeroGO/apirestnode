@@ -56,20 +56,16 @@ function guardarImagen(imagen){
 const postAlumno = async (req, res) => {
     try {
         const { nombre, edad, idCurso } = req.body;
-        const imagen = req.file;
-        console.log(nombre);
-        console.log(edad);
-        console.log(idCurso);
-        console.log(imagen);
+        //const imagen = req.file;
         if (nombre === undefined) {
             return res.status(400).json({ message: "Error, no se ha introducido un nombre" });
         }
         if (edad === undefined) {
             return res.status(400).json({ message: "Error, no se ha introducido una edad" });
         }
-        if (imagen === undefined) {
+        /*if (imagen === undefined) {
             return res.status(400).json({ message: "Error, no se ha introducido una imagen" });
-        }
+        }*/
         const connection = await getConnection();
         const buscarCurso = await connection.query("SELECT * FROM curso WHERE id = ?", idCurso);
 
@@ -77,10 +73,10 @@ const postAlumno = async (req, res) => {
             return res.status(404).json({ message: "Error, el curso con el ID proporcionado no existe. Recuerde que debe ser del 1 al 4" });
         }
 
-        const { nombreImg, blob } = guardarImagen(imagen);
+        //const { nombreImg, blob } = guardarImagen(imagen);
         
 
-        const alumno = { nombre, edad, imagen : nombreImg, imagenblob : blob, idCurso };        
+        const alumno = { nombre, edad, /*imagen : nombreImg, imagenblob : blob,*/ idCurso };        
         await connection.query("INSERT INTO alumnos SET ?", alumno);
 
         // Enviar respuesta al cliente
