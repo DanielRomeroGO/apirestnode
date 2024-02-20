@@ -95,7 +95,6 @@ const updateAlumno= async(request, response)=>{
     try{
         const { id } = request.params;
         const { nombre, edad, idCurso } = request.body;
-        //const imagen = request.file;
 
         if(id === undefined){
             response.status(400).json({message:"Error, no se ha introducido un id"});
@@ -106,15 +105,11 @@ const updateAlumno= async(request, response)=>{
         if (edad === undefined) {
             return response.status(400).json({ message: "Error, no se ha introducido una edad" });
         }
-        /*if (imagen === undefined) {
-            return response.status(400).json({ message: "Error, no se ha introducido una imagen" });
-        }*/
         const connection = await getConnection();
 
-        //const { nombreImg, blob } = guardarImagen(imagen);
         
 
-        const alumno = { nombre, edad, /*imagen : nombreImg, imagenblob : blob,*/ idCurso }; 
+        const alumno = { nombre, edad,  idCurso }; 
         const result = await connection.query("UPDATE alumnos SET ? WHERE id = ?", [alumno, id]);
         response.json(result);
     }catch(error){
