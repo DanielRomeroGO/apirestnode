@@ -1,7 +1,7 @@
 import {getConnection} from './../database/database';
 import fs from 'fs';
 const multer = require('multer');
-const upload = multer({ dest: './static/img' });
+//const upload = multer({ dest: './static/img' });
 
 const getAlumnos= async(request, response)=>{
     try{

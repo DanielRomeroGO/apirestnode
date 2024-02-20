@@ -8,17 +8,6 @@
     ],
     "routes": [
         {
-            "handle": "filesystem"
-        },
-        {
-            "src": "/api/alumnos(.*)",
-            "dest": "/api/alumnos$1"
-        },
-        {
-            "src": "/api/cursos(.*)",
-            "dest": "/api/cursos$1"
-        },
-        {
             "src": "/(.*)",
             "dest": "/"
         }

@@ -1,12 +1,12 @@
 import express from "express";
 import morgan from "morgan";
-import multer from "multer";
+//import multer from "multer";
 //Rutas
 //import languageRoutes from "./routes/language.routes";
 import alumnosRoutes from "./routes/alumnos.routes";
 import cursosRoutes from "./routes/curso.routes";
 const app = express();
-const upload = multer({ dest: './static/img' });
+//const upload = multer({ dest: './static/img' });
 // Settings
 app.set('port', 4000);
 
