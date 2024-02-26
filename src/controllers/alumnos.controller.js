@@ -24,7 +24,7 @@ const getAlumno = async (request, response) => {
 const postAlumno = async (req, res) => {
     try {
         const { nombre, edad, idCurso, imagen } = req.body;
-        
+        console.log(nombre);
         if (!nombre || !edad || !idCurso || !imagen) {
             return res.status(400).json({ message: "Faltan datos obligatorios" });
         }
