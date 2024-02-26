@@ -56,6 +56,7 @@ function guardarImagen(imagen){
 const postAlumno = async (req, res) => {
     try {
         const { nombre, edad, idCurso } = req.body;
+        console.log(nombre);
         //const imagen = req.file;
         if (nombre === undefined) {
             return res.status(400).json({ message: "Error, no se ha introducido un nombre" });
