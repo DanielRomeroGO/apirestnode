@@ -26,7 +26,7 @@ const getAlumno= async(request, response)=>{
     }    
 }
 
-function guardarImagen(imagen){
+/*function guardarImagen(imagen){
     //le ponemos un prefijo para que sea un nombre único
     const pref = Date.now();
     const nombreImg = `${pref}-${imagen.originalname}`;
@@ -34,7 +34,7 @@ function guardarImagen(imagen){
     fs.renameSync(imagen.path, ruta);
     const blob = fs.readFileSync(ruta);
     return { nombreImg, blob };
-}
+}*/
 
 /*const subirImagen = async (req, res, next) => {
     try {
