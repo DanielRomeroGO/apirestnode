@@ -112,7 +112,7 @@ const updateAlumno= async(request, response)=>{
 
         const alumno = { nombre, edad, /*imagen : nombreImg, imagenblob : blob,*/ idCurso }; 
         const result = await connection.query("UPDATE alumnos SET ? WHERE id = ?", [alumno, id]);
-        response.json(result);
+        response.json({ message: "Alumno modificado exitosamente" });
     }catch(error){
         response.status(500);
         response.send(error.message);
@@ -124,7 +124,7 @@ const deleteAlumno= async(request, response)=>{
         const { id } = request.params;
         const connection = await getConnection();
         const result = await connection.query("DELETE FROM alumnos WHERE id = ?", id);
-        response.json(result);
+        response.jsons({ message: "Alumno eliminado exitosamente" });
     }catch(error){
         response.status(500);
         response.send(error.message);
