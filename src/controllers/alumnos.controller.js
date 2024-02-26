@@ -95,5 +95,6 @@ export const methods = {
     getAlumno,
     postAlumno,
     updateAlumno,
-    deleteAlumno
+    deleteAlumno,
+    guardarImagenBase64
 };
