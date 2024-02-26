@@ -1,4 +1,5 @@
 import { getConnection } from './../database/database';
+import fs from 'fs';
 
 const getAlumnos = async (request, response) => {
     try {
@@ -21,13 +22,22 @@ const getAlumno = async (request, response) => {
     }
 };
 
+function guardarImagenBase64(nombreArchivo, base64String) {
+    const base64Data = base64String.replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(base64Data, 'base64');
+    fs.writeFileSync(nombreArchivo, buffer);
+    return nombreArchivo;
+}
+
 const postAlumno = async (req, res) => {
     try {
         const { nombre, edad, idCurso, imagen } = req.body;
-        console.log(nombre);
         if (!nombre || !edad || !idCurso || !imagen) {
             return res.status(400).json({ message: "Faltan datos obligatorios" });
         }
+
+        // Guardar la imagen en el sistema de archivos
+        const rutaImagenGuardada = guardarImagenBase64(`${nombre}.jpg`, imagen);
 
         const connection = await getConnection();
         const buscarCurso = await connection.query("SELECT * FROM curso WHERE id = ?", idCurso);
@@ -36,7 +46,8 @@ const postAlumno = async (req, res) => {
             return res.status(404).json({ message: "El curso con el ID proporcionado no existe. Recuerde que debe ser del 1 al 4" });
         }
 
-        await connection.query("INSERT INTO alumnos (nombre, edad, imagen, idCurso) VALUES (?, ?, ?, ?)", [nombre, edad, imagen, idCurso]);
+        // Insertar el alumno en la base de datos
+        await connection.query("INSERT INTO alumnos (nombre, edad, imagen, idCurso) VALUES (?, ?, ?, ?)", [nombre, edad, rutaImagenGuardada, idCurso]);
 
         return res.json({ message: "Alumno agregado exitosamente" });
     } catch (error) {
