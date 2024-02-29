@@ -1,7 +1,7 @@
 import {getConnection} from './../database/database';
 import fs from 'fs';
-//const multer = require('multer');
-//const upload = multer({ dest: './static/img' });
+const multer = require('multer');
+const upload = multer({ dest: './static/img' });
 
 const getAlumnos= async(request, response)=>{
     try{
@@ -36,7 +36,7 @@ function guardarImagen(imagen){
     return { nombreImg, blob };
 }
 
-/*const subirImagen = async (req, res, next) => {
+const subirImagen = async (req, res, next) => {
     try {
         upload.single('imagen')(req, res, function (err) {
             if (err instanceof multer.MulterError) {
@@ -50,22 +50,22 @@ function guardarImagen(imagen){
         console.error(error);
         return res.status(500).send(error.message);
     }
-}*/
+}
 
 
 const postAlumno = async (req, res) => {
     try {
         const { nombre, edad, idCurso } = req.body;
-        //const imagen = req.file;
+        const imagen = req.file;
         if (nombre === undefined) {
             return res.status(400).json({ message: "Error, no se ha introducido un nombre" });
         }
         if (edad === undefined) {
             return res.status(400).json({ message: "Error, no se ha introducido una edad" });
         }
-        /*if (imagen === undefined) {
+        if (imagen === undefined) {
             return res.status(400).json({ message: "Error, no se ha introducido una imagen" });
-        }*/
+        }
         const connection = await getConnection();
         const buscarCurso = await connection.query("SELECT * FROM curso WHERE id = ?", idCurso);
 
@@ -73,10 +73,10 @@ const postAlumno = async (req, res) => {
             return res.status(404).json({ message: "Error, el curso con el ID proporcionado no existe. Recuerde que debe ser del 1 al 4" });
         }
 
-        //const { nombreImg, blob } = guardarImagen(imagen);
+        const { nombreImg, blob } = guardarImagen(imagen);
         
 
-        const alumno = { nombre, edad, /*imagen : nombreImg, imagenblob : blob,*/ idCurso };        
+        const alumno = { nombre, edad, imagen : nombreImg, imagenblob : blob, idCurso };        
         await connection.query("INSERT INTO alumnos SET ?", alumno);
 
         // Enviar respuesta al cliente
@@ -91,7 +91,7 @@ const updateAlumno= async(request, response)=>{
     try{
         const { id } = request.params;
         const { nombre, edad, idCurso } = request.body;
-        //const imagen = request.file;
+        const imagen = request.file;
 
         if(id === undefined){
             response.status(400).json({message:"Error, no se ha introducido un id"});
@@ -102,17 +102,17 @@ const updateAlumno= async(request, response)=>{
         if (edad === undefined) {
             return response.status(400).json({ message: "Error, no se ha introducido una edad" });
         }
-        /*if (imagen === undefined) {
+        if (imagen === undefined) {
             return response.status(400).json({ message: "Error, no se ha introducido una imagen" });
-        }*/
+        }
         const connection = await getConnection();
 
-        //const { nombreImg, blob } = guardarImagen(imagen);
+        const { nombreImg, blob } = guardarImagen(imagen);
         
 
-        const alumno = { nombre, edad, /*imagen : nombreImg, imagenblob : blob,*/ idCurso }; 
+        const alumno = { nombre, edad, imagen : nombreImg, imagenblob : blob, idCurso }; 
         const result = await connection.query("UPDATE alumnos SET ? WHERE id = ?", [alumno, id]);
-        response.json(result);
+        response.json({ message: "Alumno modificado exitosamente" });
     }catch(error){
         response.status(500);
         response.send(error.message);
@@ -124,7 +124,7 @@ const deleteAlumno= async(request, response)=>{
         const { id } = request.params;
         const connection = await getConnection();
         const result = await connection.query("DELETE FROM alumnos WHERE id = ?", id);
-        response.json(result);
+        response.json({ message: "Alumno eliminado exitosamente" });
     }catch(error){
         response.status(500);
         response.send(error.message);
@@ -132,7 +132,7 @@ const deleteAlumno= async(request, response)=>{
 }
 
 export const methods={
-    //subirImagen,
+    subirImagen,
     getAlumnos,
     getAlumno,
     postAlumno,
