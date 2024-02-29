@@ -1,21 +1,20 @@
-import {getConnection} from './../database/database';
+import { getConnection } from './../database/database';
 import fs from 'fs';
 const multer = require('multer');
 const upload = multer({ dest: './static/img' });
 
-const getAlumnos= async(request, response)=>{
-    try{
+const getAlumnos = async (request, response) => {
+    try {
         const connection = await getConnection();
         const result = await connection.query('SELECT * FROM alumnos');
         response.json(result);
-    }catch(error){
-        response.status(500);
-        response.send(error.message);
-    }    
-}
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
+};
 
-const getAlumno= async(request, response)=>{
-    try{
+const getAlumno = async (request, response) => {
+    try {
         const { id } = request.params;
         const connection = await getConnection();
         const result = await connection.query("SELECT * FROM alumnos WHERE id = ?", id);
@@ -47,11 +46,16 @@ const subirImagen = async (req, res, next) => {
             next(); // Llamar a next() solo si no hay errores
         });
     } catch (error) {
-        console.error(error);
-        return res.status(500).send(error.message);
+        response.status(500).send(error.message);
     }
 }
 
+function guardarImagenBase64(nombreArchivo, base64String) {
+    const base64Data = base64String.replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(base64Data, 'base64');
+    fs.writeFileSync(nombreArchivo, buffer);
+    return nombreArchivo;
+}
 
 const postAlumno = async (req, res) => {
     try {
@@ -70,7 +74,7 @@ const postAlumno = async (req, res) => {
         const buscarCurso = await connection.query("SELECT * FROM curso WHERE id = ?", idCurso);
 
         if (buscarCurso.length === 0) {
-            return res.status(404).json({ message: "Error, el curso con el ID proporcionado no existe. Recuerde que debe ser del 1 al 4" });
+            return res.status(404).json({ message: "El curso con el ID proporcionado no existe. Recuerde que debe ser del 1 al 4" });
         }
 
         const { nombreImg, blob } = guardarImagen(imagen);
@@ -84,17 +88,16 @@ const postAlumno = async (req, res) => {
     } catch (error) {
         res.status(500).send(error.message);
     }
-}
+};
 
-
-const updateAlumno= async(request, response)=>{
-    try{
+const updateAlumno = async (request, response) => {
+    try {
         const { id } = request.params;
         const { nombre, edad, idCurso } = request.body;
         const imagen = request.file;
 
-        if(id === undefined){
-            response.status(400).json({message:"Error, no se ha introducido un id"});
+        if (!nombre || !edad || !idCurso || !imagen) {
+            return response.status(400).json({ message: "Faltan datos obligatorios" });
         }
         if (nombre === undefined) {
             return response.status(400).json({ message: "Error, no se ha introducido un nombre" });
@@ -106,6 +109,7 @@ const updateAlumno= async(request, response)=>{
             return response.status(400).json({ message: "Error, no se ha introducido una imagen" });
         }
         const connection = await getConnection();
+        const buscarCurso = await connection.query("SELECT * FROM curso WHERE id = ?", idCurso);
 
         const { nombreImg, blob } = guardarImagen(imagen);
         
@@ -116,11 +120,11 @@ const updateAlumno= async(request, response)=>{
     }catch(error){
         response.status(500);
         response.send(error.message);
-    }    
+    }
 }
 
-const deleteAlumno= async(request, response)=>{
-    try{
+const deleteAlumno = async (request, response) => {
+    try {
         const { id } = request.params;
         const connection = await getConnection();
         const result = await connection.query("DELETE FROM alumnos WHERE id = ?", id);
@@ -137,5 +141,6 @@ export const methods={
     getAlumno,
     postAlumno,
     updateAlumno,
-    deleteAlumno
+    deleteAlumno,
+    guardarImagenBase64
 };
